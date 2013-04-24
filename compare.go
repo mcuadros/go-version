@@ -23,6 +23,15 @@ var specialForms = map[string]int{
 	"pl":    1,
 }
 
+// The function first replaces _, - and + with a dot . in the version strings 
+// and also inserts dots . before and after any non number so that for example 
+// '4.3.2RC1' becomes '4.3.2.RC.1'. 
+// 
+// Then it splits the results like if you were using Split(version, '.').
+// Then it compares the parts starting from left to right. If a part contains 
+// special version strings these are handled in the following order: any string
+// not found in this list:
+//   < dev < alpha = a < beta = b < RC = rc < # < pl = p. 
 func CompareVersion(version1, version2, operator string) bool {
 	compare := CompareVersionSimple(version1, version2)
 
@@ -44,6 +53,8 @@ func CompareVersion(version1, version2, operator string) bool {
 	return false
 }
 
+// Just the same of CompareVersion but return a int result, 0 if both version
+// are equal, 1 if the right side is bigger and -1 if the right side is lower
 func CompareVersionSimple(version1, version2 string) int {
 	var x, r, l int = 0, 0, 0
 

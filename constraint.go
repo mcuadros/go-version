@@ -197,13 +197,6 @@ func parseStability(version string) string {
 	return "stable"
 }
 
-func RegReplace(pattern, replace, subject string) string {
-	reg := regexp.MustCompile(pattern)
-	matched := reg.ReplaceAllString(subject, replace)
-
-	return matched
-}
-
 func RegFind(pattern, subject string) []string {
 	reg := regexp.MustCompile(pattern)
 	matched := reg.FindAllStringSubmatch(subject, -1)

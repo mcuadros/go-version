@@ -27,7 +27,7 @@ var simpleConstraints = map[string][]*Constraint{
 	"<=1.2.3":             []*Constraint{{"<=", "1.2.3.0"}},
 	">=1.2.3":             []*Constraint{{">=", "1.2.3.0"}},
 	"=1.2.3":              []*Constraint{{"=", "1.2.3.0"}},
-	"==1.2.3":             []*Constraint{{"=", "1.2.3.0"}},
+	"==1.2.3":             []*Constraint{{"==", "1.2.3.0"}},
 	"1.2.3":               []*Constraint{{"=", "1.2.3.0"}},
 	"=1.0":                []*Constraint{{"=", "1.0.0.0"}},
 	"1.2.3b5":             []*Constraint{{"=", "1.2.3.0-beta5"}},

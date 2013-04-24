@@ -7,6 +7,7 @@ import (
 
 var modifierRegex = `[._-]?(?:(stable|beta|b|RC|alpha|a|patch|pl|p)(?:[.-]?(\d+))?)?([.-]?dev)?`
 
+// Normalizes a version string to be able to perform comparisons on it
 func Normalize(version string) string {
 
 	// ignore aliases and just assume the alias is required instead of the source
