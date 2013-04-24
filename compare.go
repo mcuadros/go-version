@@ -34,8 +34,8 @@ var specialForms = map[string]int{
 // special version strings these are handled in the following order: any string
 // not found in this list:
 //   < dev < alpha = a < beta = b < RC = rc < # < pl = p. 
-func CompareVersion(version1, version2, operator string) bool {
-	compare := CompareVersionSimple(version1, version2)
+func Compare(version1, version2, operator string) bool {
+	compare := CompareSimple(version1, version2)
 
 	switch {
 	case operator == ">" || operator == "gt":
@@ -55,9 +55,11 @@ func CompareVersion(version1, version2, operator string) bool {
 	return false
 }
 
+// Compares two normalizated version number strings
+//
 // Just the same of CompareVersion but return a int result, 0 if both version
 // are equal, 1 if the right side is bigger and -1 if the right side is lower
-func CompareVersionSimple(version1, version2 string) int {
+func CompareSimple(version1, version2 string) int {
 	var x, r, l int = 0, 0, 0
 
 	v1, v2 := prepVersion(version1), prepVersion(version2)

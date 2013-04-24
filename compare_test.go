@@ -1,4 +1,4 @@
-package misc
+package version
 
 import (
 	"strings"
@@ -104,7 +104,7 @@ var compareVersionSimpleValues = map[string]int{
 func TestCompareVersionSimple(t *testing.T) {
 	for in, out := range compareVersionSimpleValues {
 		v := strings.Split(in, "|")
-		if x := CompareVersionSimple(v[0], v[1]); x != out {
+		if x := CompareSimple(v[0], v[1]); x != out {
 			t.Errorf("FAIL: CompareVersionSimple(%v) = %v: want %v", in, x, out)
 		}
 	}
@@ -802,7 +802,7 @@ var compareVersionValues = map[string]bool{
 func TestCompareVersion(t *testing.T) {
 	for in, out := range compareVersionValues {
 		v := strings.Split(in, " ")
-		if x := CompareVersion(v[0], v[2], v[1]); x != out {
+		if x := Compare(v[0], v[2], v[1]); x != out {
 			t.Errorf("FAIL: CompareVersion(%v) = %v: want %v", in, x, out)
 		}
 	}
