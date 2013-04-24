@@ -23,6 +23,8 @@ var specialForms = map[string]int{
 	"pl":    1,
 }
 
+// Compares two normalizated version number strings, for a particular relationship
+// 
 // The function first replaces _, - and + with a dot . in the version strings 
 // and also inserts dots . before and after any non number so that for example 
 // '4.3.2RC1' becomes '4.3.2.RC.1'. 
