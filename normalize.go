@@ -7,6 +7,12 @@ import (
 
 var modifierRegex = `[._-]?(?:(stable|beta|b|RC|alpha|a|patch|pl|p)(?:[.-]?(\d+))?)?([.-]?dev)?`
 
+var regexpMasterLikeBranches = regexp.MustCompile(`^(?:dev-)?(?:master|trunk|default)$`)
+var regexpBranchNormalize = regexp.MustCompile(`(?i)^v?(\d+)(\.(?:\d+|[x*]))?(\.(?:\d+|[x*]))?(\.(?:\d+|[x*]))?$`)
+
+
+
+
 // Normalizes a version string to be able to perform comparisons on it
 func Normalize(version string) string {
 
@@ -17,8 +23,7 @@ func Normalize(version string) string {
 	}
 
 	// match master-like branches
-	r := regexp.MustCompile(`^(?:dev-)?(?:master|trunk|default)$`)
-	if r.MatchString(strings.ToLower(version)) {
+	if regexpMasterLikeBranches.MatchString(strings.ToLower(version)) {
 		return "9999999-dev"
 	}
 
@@ -103,10 +108,9 @@ func normalizeBranch(name string) string {
 		return Normalize(name)
 	}
 
-	r := regexp.MustCompile(`(?i)^v?(\d+)(\.(?:\d+|[x*]))?(\.(?:\d+|[x*]))?(\.(?:\d+|[x*]))?$`)
 	replace := strings.NewReplacer("*", "9999999", "x", "9999999")
 
-	matched := r.FindAllStringSubmatch(name, -1)
+	matched := regexpBranchNormalize.FindAllStringSubmatch(name, -1)
 	if matched != nil {
 		name = ""
 		for _, val := range matched[0][1:5] {
