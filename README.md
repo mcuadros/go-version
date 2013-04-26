@@ -55,6 +55,17 @@ version.Compare("1.0", "1.0b1", "ge")
 //Returns: true
 ```
 
+`version.ConstrainGroup.Match()`: Match a given version againts a group of constrains, read about constraint string format at [Composer documentation](http://getcomposer.org/doc/01-basic-usage.md#package-versions)  
+
+```go
+c := version.NewConstrainGroupFromString(">2.0,<=3.0")
+c.Match("2.5.0beta")
+//Returns: true
+
+c := version.NewConstrainGroupFromString("~1.2.3")
+c.Match("1.2.3.5")
+//Returns: true
+```
 
 License
 -------

@@ -10,12 +10,43 @@ type ConstraintGroup struct {
 	constraints []*Constraint
 }
 
+// Return a new NewConstrainGroup
 func NewConstrainGroup() *ConstraintGroup {
 	group := new(ConstraintGroup)
 
 	return group
 }
 
+// Return a new NewConstrainGroup and create the constraints based on a string
+//
+// Version constraints can be specified in a few different ways.
+//
+// - Exact version: You can specify the exact version of a package, for 
+//   example 1.0.2.
+//
+// - Range: By using comparison operators you can specify ranges of valid versions. 
+//   Valid operators are >, >=, <, <=, !=. An example range would be >=1.0. You can 
+//   define multiple ranges, separated by a comma: >=1.0,<2.0.
+// 
+// - Wildcard: You can specify a pattern with a * wildcard. 1.0.* is the equivalent 
+//   of >=1.0,<1.1.
+//
+// - Next Significant Release (Tilde Operator): The ~ operator is best explained by 
+//   example: ~1.2 is equivalent to >=1.2,<2.0, while ~1.2.3 is equivalent to 
+//   >=1.2.3,<1.3. As you can see it is mostly useful for projects respecting 
+//   semantic versioning. A common usage would be to mark the minimum minor 
+//   version you depend on, like ~1.2 (which allows anything up to, but not 
+//   including, 2.0). Since in theory there should be no backwards compatibility 
+//   breaks until 2.0, that works well. Another way of looking at it is that 
+//   using ~ specifies a minimum version, but allows the last digit specified 
+//   to go up.
+//
+// By default only stable releases are taken into consideration. If you would like 
+// to also get RC, beta, alpha or dev versions of your dependencies you can do so 
+// using stability flags. To change that for all packages instead of doing per 
+// dependency you can also use the minimum-stability setting.
+// 
+// From: http://getcomposer.org/doc/01-basic-usage.md#package-versions
 func NewConstrainGroupFromString(name string) *ConstraintGroup {
 	group := new(ConstraintGroup)
 	group.fromString(name)
@@ -23,6 +54,7 @@ func NewConstrainGroupFromString(name string) *ConstraintGroup {
 	return group
 }
 
+// Adds a Contraint to the group
 func (self *ConstraintGroup) AddConstraint(constraint ...*Constraint) {
 	if self.constraints == nil {
 		self.constraints = make([]*Constraint, 0)
@@ -31,10 +63,12 @@ func (self *ConstraintGroup) AddConstraint(constraint ...*Constraint) {
 	self.constraints = append(self.constraints, constraint...)
 }
 
+// Return all the constraints
 func (self *ConstraintGroup) GetConstraints() []*Constraint {
 	return self.constraints
 }
 
+// Match a given version againts the group
 func (self *ConstraintGroup) Match(version string) bool {
 	for _, constraint := range self.constraints {
 		if constraint.Match(version) == false {

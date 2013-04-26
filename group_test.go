@@ -120,6 +120,8 @@ var miscConstraints = map[string]bool{
 	"~1.2.3|1.4.3.5":       false,
 	"2.0.*|2.0.5":          true,
 	"2.0.*|2.1.5":          false,
+	"2.0.5|2.0.5":          true,
+	"2.0.5|2.0.9":          false,
 }
 
 func TestMatch(t *testing.T) {
@@ -130,5 +132,19 @@ func TestMatch(t *testing.T) {
 		if x := constraint.Match(tmp[1]); x != out {
 			t.Errorf("FAIL: Match(%v) = {%s}: want {%s}", in, x, out)
 		}
+	}
+}
+
+func TestAddConstraint(t *testing.T) {
+	group := NewConstrainGroup()
+	group.AddConstraint(NewConstrain("=", "1.0.0"))
+
+	constraints := group.GetConstraints()
+	if x := constraints[0].GetOperator(); x != "=" {
+		t.Errorf("FAIL: AddConstraintOperator() = {%s}: want {%s}", x, "=")
+	}
+
+	if x := constraints[0].GetVersion(); x != "1.0.0" {
+		t.Errorf("FAIL: AddConstraintVersion() = {%s}: want {%s}", x, "1.0.0")
 	}
 }
