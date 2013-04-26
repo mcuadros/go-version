@@ -1,7 +1,7 @@
 package version
 
-/*
 import (
+	"strings"
 	"testing"
 )
 
@@ -14,8 +14,9 @@ var anyConstraints = map[string][]*Constraint{
 
 func TestParseAnyConstraints(t *testing.T) {
 	for in, out := range anyConstraints {
-		if x := ParseConstraints(in); len(x) != 0 {
-			t.Errorf("FAIL: parseConstraints(%v) = {%s}: want {%s}", in, x, out)
+		constraint := NewConstrainGroupFromString(in)
+		if x := constraint.GetConstraints(); len(x) != 0 {
+			t.Errorf("FAIL: fromString(%v) = {%s}: want {%s}", in, x, out)
 		}
 	}
 }
@@ -51,7 +52,8 @@ var simpleConstraints = map[string][]*Constraint{
 
 func TestParseConstraints(t *testing.T) {
 	for in, out := range simpleConstraints {
-		if x := ParseConstraints(in); x[0].String() != out[0].String() {
+		constraint := NewConstrainGroupFromString(in)
+		if x := constraint.GetConstraints(); x[0].String() != out[0].String() {
 			t.Errorf("FAIL: parseConstraints(%v) = {%s}: want {%s}", in, x, out)
 		}
 	}
@@ -69,7 +71,8 @@ var wildcardConstraints = map[string][]*Constraint{
 
 func TestParseConstraintsWildcardConstraints(t *testing.T) {
 	for in, out := range wildcardConstraints {
-		if x := ParseConstraints(in); x[0].String() != out[0].String() && x[1].String() != out[1].String() {
+		constraint := NewConstrainGroupFromString(in)
+		if x := constraint.GetConstraints(); x[0].String() != out[0].String() && x[1].String() != out[1].String() {
 			t.Errorf("FAIL: parseConstraints(%v) = {%s}: want {%s}", in, x, out)
 		}
 	}
@@ -88,7 +91,8 @@ var tildeConstraints = map[string][]*Constraint{
 
 func TestParseConstraintsTildeConstraints(t *testing.T) {
 	for in, out := range tildeConstraints {
-		if x := ParseConstraints(in); x[0].String() != out[0].String() && x[1].String() != out[1].String() {
+		constraint := NewConstrainGroupFromString(in)
+		if x := constraint.GetConstraints(); x[0].String() != out[0].String() && x[1].String() != out[1].String() {
 			t.Errorf("FAIL: parseConstraints(%v) = {%s}: want {%s}", in, x, out)
 		}
 	}
@@ -101,9 +105,30 @@ var multiConstraints = map[string][]*Constraint{
 
 func TestParseConstraintsMultiConstraints(t *testing.T) {
 	for in, out := range multiConstraints {
-		if x := ParseConstraints(in); x[0].String() != out[0].String() && x[1].String() != out[1].String() {
+		constraint := NewConstrainGroupFromString(in)
+		if x := constraint.GetConstraints(); x[0].String() != out[0].String() && x[1].String() != out[1].String() {
 			t.Errorf("FAIL: parseConstraints(%v) = {%s}: want {%s}", in, x, out)
 		}
 	}
 }
-*/
+
+var miscConstraints = map[string]bool{
+	"*|1.0":                true,
+	">2.0,<=3.0|2.5.0beta": true,
+	">2.0,<=3.0|3.5.0beta": false,
+	"~1.2.3|1.2.3.5":       true,
+	"~1.2.3|1.4.3.5":       false,
+	"2.0.*|2.0.5":          true,
+	"2.0.*|2.1.5":          false,
+}
+
+func TestMatch(t *testing.T) {
+	for in, out := range miscConstraints {
+		tmp := strings.Split(in, "|")
+
+		constraint := NewConstrainGroupFromString(tmp[0])
+		if x := constraint.Match(tmp[1]); x != out {
+			t.Errorf("FAIL: Match(%v) = {%s}: want {%s}", in, x, out)
+		}
+	}
+}
