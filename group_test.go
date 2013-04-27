@@ -113,15 +113,19 @@ func TestParseConstraintsMultiConstraints(t *testing.T) {
 }
 
 var miscConstraints = map[string]bool{
-	"*|1.0":                true,
-	">2.0,<=3.0|2.5.0beta": true,
-	">2.0,<=3.0|3.5.0beta": false,
-	"~1.2.3|1.2.3.5":       true,
-	"~1.2.3|1.4.3.5":       false,
-	"2.0.*|2.0.5":          true,
-	"2.0.*|2.1.5":          false,
-	"2.0.5|2.0.5":          true,
-	"2.0.5|2.0.9":          false,
+	"*|1.0":                   true,
+	">2.0,<=3.0|2.5.0beta":    true,
+	">2.0,<=3.0|3.5.0beta":    false,
+	">=2.2.3,<2.4-dev|2.3.3":  true,
+	"~1.2.3|1.2.3.5":          true,
+	"~1.2.3|1.4.3.5":          false,
+	"2.0.*|2.0.5":             true,
+	"2.0.*|2.1.5":             false,
+	"2.0.5|2.0.5":             true,
+	"2.0.5|2.0.9":             false,
+	">2.0.5|2.0.9":            true,
+	"<2.0.5|2.0.9":            false,
+	">=dev-master|dev-master": true,
 }
 
 func TestMatch(t *testing.T) {

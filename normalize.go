@@ -71,7 +71,7 @@ func Normalize(version string) string {
 		return version
 	}
 
-	result = RegFind(`(.*?)[.-]?dev$`, version)
+	result = RegFind(`(?i)(.*?)[.-]?dev$`, version)
 	if result != nil {
 		return normalizeBranch(result[1])
 	}
@@ -103,54 +103,9 @@ func normalizeBranch(name string) string {
 
 	}
 
+	if strings.HasSuffix(strings.ToLower(name), "-dev") {
+		return name
+	}
+
 	return "dev-" + name
-}
-
-func expandStability(stability string) string {
-	stability = strings.ToLower(stability)
-
-	switch stability {
-	case "a":
-		return "alpha"
-	case "b":
-		return "beta"
-	case "p":
-		return "patch"
-	case "pl":
-		return "patch"
-	case "rc":
-		return "RC"
-	}
-
-	return stability
-}
-
-func parseStability(version string) string {
-	version = regexp.MustCompile(`(?i)#.+$`).ReplaceAllString(version, " ")
-	version = strings.ToLower(version)
-
-	if strings.HasPrefix(version, "dev-") || strings.HasSuffix(version, "-dev") {
-		return "dev"
-	}
-
-	result := RegFind(`(?i)^v?(\d{1,3})(\.\d+)?(\.\d+)?(\.\d+)?`+modifierRegex+`$`, version)
-	if result != nil {
-		if len(result) > 3 {
-			return "dev"
-		}
-	}
-
-	if result[1] != "" {
-		if "beta" == result[1] || "b" == result[1] {
-			return "beta"
-		}
-		if "alpha" == result[1] || "a" == result[1] {
-			return "alpha"
-		}
-		if "rc" == result[1] {
-			return "RC"
-		}
-	}
-
-	return "stable"
 }
