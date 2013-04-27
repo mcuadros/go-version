@@ -9,7 +9,6 @@ var stabilityValues = map[string]int{
 	"1.0-dev":   Development,
 	"1.0-alpha": Alpha,
 	"1.0b1":     Beta,
-	"1.0trunk":  Beta,
 	"1.0rc1":    RC,
 }
 
