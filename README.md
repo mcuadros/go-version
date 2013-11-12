@@ -67,6 +67,13 @@ c.Match("1.2.3.5")
 //Returns: true
 ```
 
+`version.Sort()`: Sorts a string slice of version number strings using version.CompareSimple()
+
+```go
+version.Sort([]string{"1.10-dev", "1.0rc1", "1.0", "1.0-dev"})
+//Returns []string{"1.0-dev", "1.0rc1", "1.0", "1.10-dev"}
+```
+
 License
 -------
 
