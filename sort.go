@@ -4,6 +4,12 @@ import (
 	"sort"
 )
 
+// Sorts a string slice of version number strings using version.CompareSimple()
+//
+// Example:
+//     version.Sort([]string{"1.10-dev", "1.0rc1", "1.0", "1.0-dev"})
+//     Returns []string{"1.0-dev", "1.0rc1", "1.0", "1.10-dev"}
+//
 func Sort(versionStrings []string) {
 	versions := versionSlice(versionStrings)
 	sort.Sort(versions)

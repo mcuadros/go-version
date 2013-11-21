@@ -69,6 +69,15 @@ func (self *ConstraintGroup) GetConstraints() []*Constraint {
 }
 
 // Match a given version againts the group
+//
+// Usage
+//     c := version.NewConstrainGroupFromString(">2.0,<=3.0")
+//     c.Match("2.5.0beta")
+//     Returns: true
+//
+//     c := version.NewConstrainGroupFromString("~1.2.3")
+//     c.Match("1.2.3.5")
+//     Returns: true
 func (self *ConstraintGroup) Match(version string) bool {
 	for _, constraint := range self.constraints {
 		if constraint.Match(version) == false {

@@ -33,7 +33,17 @@ var specialForms = map[string]int{
 // Then it compares the parts starting from left to right. If a part contains 
 // special version strings these are handled in the following order: any string
 // not found in this list:
-//   < dev < alpha = a < beta = b < RC = rc < # < pl = p. 
+//   < dev < alpha = a < beta = b < RC = rc < # < pl = p.
+//
+// Usage
+//     version.Compare("1.0-dev", "1.0", "<")
+//     Returns: true
+//
+//     version.Compare("1.0rc1", "1.0", ">=")
+//     Returns: false
+//
+//     version.Compare("1.0", "1.0b1", "ge")
+//     Returns: true
 func Compare(version1, version2, operator string) bool {
 	compare := CompareSimple(version1, version2)
 
@@ -59,6 +69,13 @@ func Compare(version1, version2, operator string) bool {
 //
 // Just the same of CompareVersion but return a int result, 0 if both version
 // are equal, 1 if the right side is bigger and -1 if the right side is lower
+//
+// Usage
+//     version.CompareSimple("1.2", "1.0.1")
+//     Returns: 1
+//
+//     version.CompareSimple("1.0rc1", "1.0")
+//     Returns: -1
 func CompareSimple(version1, version2 string) int {
 	var x, r, l int = 0, 0, 0
 
