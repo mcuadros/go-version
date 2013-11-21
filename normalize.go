@@ -11,6 +11,11 @@ var regexpMasterLikeBranches = regexp.MustCompile(`^(?:dev-)?(?:master|trunk|def
 var regexpBranchNormalize = regexp.MustCompile(`(?i)^v?(\d+)(\.(?:\d+|[x*]))?(\.(?:\d+|[x*]))?(\.(?:\d+|[x*]))?$`)
 
 // Normalizes a version string to be able to perform comparisons on it
+//
+// Example:
+//     version.Normalize("10.4.13-b")
+//     Returns: 10.4.13.0-beta
+//
 func Normalize(version string) string {
 
 	// ignore aliases and just assume the alias is required instead of the source
