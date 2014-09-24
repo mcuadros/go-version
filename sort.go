@@ -22,7 +22,7 @@ func (s versionSlice) Len() int {
 }
 
 func (s versionSlice) Less(i, j int) bool {
-	cmp := CompareSimple(s[i], s[j])
+	cmp := CompareSimple(Normalize(s[i]), Normalize(s[j]))
 	if cmp == 0 {
 		return s[i] < s[j]
 	}

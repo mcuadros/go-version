@@ -46,16 +46,28 @@ func TestSort(t *testing.T) {
 				"1.10",
 			},
 			output: []string{
+				"1.0pl1",
 				"1.0-dev",
 				"1.0a1",
 				"1.0b1",
 				"1.0RC1",
 				"1.0rc1",
 				"1.0",
-				"1.0pl1",
 				"1.1-dev",
 				"1.2",
 				"1.10",
+			},
+		},
+		{
+			input: []string{
+				"v1.0",
+				"1.0.1",
+				"dev-master",
+			},
+			output: []string{
+				"v1.0",
+				"1.0.1",
+				"dev-master",
 			},
 		},
 	}
