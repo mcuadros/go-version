@@ -110,7 +110,7 @@ func TestCompareVersionSimple(t *testing.T) {
 	}
 }
 
-var compareVersionValues = map[string]bool{
+var compareNormalizedVersionValues = map[string]bool{
 	"1.0-dev lt 1.0-dev":    false,
 	"1.0-dev < 1.0-dev":     false,
 	"1.0-dev le 1.0-dev":    true,
@@ -798,13 +798,30 @@ var compareVersionValues = map[string]bool{
 	"1.0pl1 <> 1.0pl1":      false,
 	"1.0pl1 != 1.0pl1":      false,
 	"2.2.3.0 < 2.4.0.0-dev": true,
+	//Test unnormalized strings
+	"2.3.4 < v3.1.2":           false,
+	"dev-master = 9999999-dev": false,
 }
 
-func TestCompareVersion(t *testing.T) {
+func TestCompareNormalized(t *testing.T) {
+	for in, out := range compareNormalizedVersionValues {
+		v := strings.Split(in, " ")
+		if x := CompareNormalized(v[0], v[2], v[1]); x != out {
+			t.Errorf("FAIL: CompareNormalized(%v) = %v: want %v", in, x, out)
+		}
+	}
+}
+
+var compareVersionValues = map[string]bool{
+	"2.3.4 < v3.1.2":           true,
+	"dev-master = 9999999-dev": true,
+}
+
+func TestCompare(t *testing.T) {
 	for in, out := range compareVersionValues {
 		v := strings.Split(in, " ")
 		if x := Compare(v[0], v[2], v[1]); x != out {
-			t.Errorf("FAIL: CompareVersion(%v) = %v: want %v", in, x, out)
+			t.Errorf("FAIL: Compare(%v) = %v: want %v", in, x, out)
 		}
 	}
 }

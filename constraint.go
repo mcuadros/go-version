@@ -40,7 +40,7 @@ func (self *Constraint) GetVersion() string {
 
 // Match a given version againts the constraint
 func (self *Constraint) Match(version string) bool {
-	return Compare(Normalize(version), Normalize(self.version), self.operator)
+	return Compare(version, self.version, self.operator)
 }
 
 // Return a string representation

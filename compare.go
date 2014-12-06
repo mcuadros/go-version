@@ -23,17 +23,7 @@ var specialForms = map[string]int{
 	"pl":    1,
 }
 
-// Compares two normalizated version number strings, for a particular relationship
-// 
-// The function first replaces _, - and + with a dot . in the version strings 
-// and also inserts dots . before and after any non number so that for example 
-// '4.3.2RC1' becomes '4.3.2.RC.1'. 
-// 
-// Then it splits the results like if you were using Split(version, '.').
-// Then it compares the parts starting from left to right. If a part contains 
-// special version strings these are handled in the following order: any string
-// not found in this list:
-//   < dev < alpha = a < beta = b < RC = rc < # < pl = p.
+// Compares two version number strings, for a particular relationship
 //
 // Usage
 //     version.Compare("1.0-dev", "1.0", "<")
@@ -45,6 +35,34 @@ var specialForms = map[string]int{
 //     version.Compare("1.0", "1.0b1", "ge")
 //     Returns: true
 func Compare(version1, version2, operator string) bool {
+	version1N := Normalize(version1)
+	version2N := Normalize(version2)
+
+	return CompareNormalized(version1N, version2N, operator)
+}
+
+// Compares two normalizated version number strings, for a particular relationship
+//
+// The function first replaces _, - and + with a dot . in the version strings
+// and also inserts dots . before and after any non number so that for example
+// '4.3.2RC1' becomes '4.3.2.RC.1'.
+//
+// Then it splits the results like if you were using Split(version, '.').
+// Then it compares the parts starting from left to right. If a part contains
+// special version strings these are handled in the following order: any string
+// not found in this list:
+//   < dev < alpha = a < beta = b < RC = rc < # < pl = p.
+//
+// Usage
+//     version.CompareNormalized("1.0-dev", "1.0", "<")
+//     Returns: true
+//
+//     version.CompareNormalized("1.0rc1", "1.0", ">=")
+//     Returns: false
+//
+//     version.CompareNormalized("1.0", "1.0b1", "ge")
+//     Returns: true
+func CompareNormalized(version1, version2, operator string) bool {
 	compare := CompareSimple(version1, version2)
 
 	switch {
