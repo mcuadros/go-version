@@ -51,7 +51,7 @@ version.Compare("1.0-dev", "1.0", "<")
 version.Compare("1.0rc1", "1.0", ">=")
 //Returns: false
 
-version.Compare("1.0", "1.0b1", "ge")
+version.Compare("2.3.4", "v3.1.2", "<")
 //Returns: true
 ```
 
