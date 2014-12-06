@@ -798,6 +798,7 @@ var compareVersionValues = map[string]bool{
 	"1.0pl1 <> 1.0pl1":      false,
 	"1.0pl1 != 1.0pl1":      false,
 	"2.2.3.0 < 2.4.0.0-dev": true,
+	"2.3.4 < v3.1.2":        true,
 }
 
 func TestCompareVersion(t *testing.T) {

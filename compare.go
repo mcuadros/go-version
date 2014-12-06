@@ -9,6 +9,7 @@ import (
 var regexpSigns = regexp.MustCompile(`[_\-+]`)
 var regexpDotBeforeDigit = regexp.MustCompile(`([^.\d]+)`)
 var regexpMultipleDots = regexp.MustCompile(`\.{2,}`)
+var regexpVersionV = regexp.MustCompile(`^v\d`)
 
 var specialForms = map[string]int{
 	"dev":   -6,
@@ -24,13 +25,13 @@ var specialForms = map[string]int{
 }
 
 // Compares two normalizated version number strings, for a particular relationship
-// 
-// The function first replaces _, - and + with a dot . in the version strings 
-// and also inserts dots . before and after any non number so that for example 
-// '4.3.2RC1' becomes '4.3.2.RC.1'. 
-// 
+//
+// The function first replaces _, - and + with a dot . in the version strings
+// and also inserts dots . before and after any non number so that for example
+// '4.3.2RC1' becomes '4.3.2.RC.1'.
+//
 // Then it splits the results like if you were using Split(version, '.').
-// Then it compares the parts starting from left to right. If a part contains 
+// Then it compares the parts starting from left to right. If a part contains
 // special version strings these are handled in the following order: any string
 // not found in this list:
 //   < dev < alpha = a < beta = b < RC = rc < # < pl = p.
@@ -118,6 +119,10 @@ func CompareSimple(version1, version2 string) int {
 func prepVersion(version string) []string {
 	if len(version) == 0 {
 		return []string{""}
+	}
+
+	if regexpVersionV.MatchString(version) {
+		version = version[1:]
 	}
 
 	version = regexpSigns.ReplaceAllString(version, ".")
