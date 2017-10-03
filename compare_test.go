@@ -825,3 +825,18 @@ func TestCompare(t *testing.T) {
 		}
 	}
 }
+
+var simpleVersionFormatValues = map[string]bool{
+	"9999999-dev": true,
+	"1.2.3": true,
+	"abcdef": false,
+	"1.abcdef": false,
+}
+
+func TestValidSimpleVersionFormat(t *testing.T) {
+    for in, out := range simpleVersionFormatValues {
+            if x := ValidSimpleVersionFormat(in); x != out {
+                t.Errorf("FAIL: ValidSimpleVersionFormat(%v) = %v: want %v", in, x, out)
+         }
+    }
+}
