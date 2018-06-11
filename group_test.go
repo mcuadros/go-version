@@ -134,7 +134,7 @@ func TestMatch(t *testing.T) {
 
 		constraint := NewConstrainGroupFromString(tmp[0])
 		if x := constraint.Match(tmp[1]); x != out {
-			t.Errorf("FAIL: Match(%v) = {%s}: want {%s}", in, x, out)
+			t.Errorf("FAIL: Match(%v) = {%v}: want {%v}", in, x, out)
 		}
 	}
 }

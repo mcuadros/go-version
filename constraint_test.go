@@ -36,7 +36,7 @@ func TestMatchSuccess(t *testing.T) {
 	out := true
 
 	if x := constraint.Match("1.0"); x != out {
-		t.Errorf("FAIL: Match() = {%s}: want {%s}", x, out)
+		t.Errorf("FAIL: Match() = {%v}: want {%v}", x, out)
 	}
 }
 
@@ -45,6 +45,6 @@ func TestMatchFail(t *testing.T) {
 	out := false
 
 	if x := constraint.Match("2.0"); x != out {
-		t.Errorf("FAIL: Match() = {%s}: want {%s}", x, out)
+		t.Errorf("FAIL: Match() = {%v}: want {%v}", x, out)
 	}
 }
